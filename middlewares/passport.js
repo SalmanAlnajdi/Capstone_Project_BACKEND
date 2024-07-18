@@ -48,4 +48,12 @@ const jwtStrategy = new JwtStrategy(
   }
 );
 
-module.exports = { localStrategy, jwtStrategy };
+const onlyAdmin = async (req, res, next) => {
+  if (req.user.role == "Admin") {
+    next();
+  } else {
+    next({ message: "You are not admin!!!!" });
+  }
+};
+
+module.exports = { localStrategy, jwtStrategy, onlyAdmin };

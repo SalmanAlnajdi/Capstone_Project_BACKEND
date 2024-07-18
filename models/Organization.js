@@ -44,6 +44,10 @@ const OrganizationSchema = new mongoose.Schema({
       ref: "Event",
     },
   ],
+  role: {
+    type: String,
+    default: "Organization",
+  },
 });
 
 module.exports = mongoose.model("Organization", OrganizationSchema);

@@ -10,6 +10,7 @@ const {
   updateMyProfile,
 } = require("./controllers");
 const passport = require("passport");
+const { onlyAdmin } = require("../../middlewares/passport");
 
 userRouter.post("/signup", upload.single("image"), signup);
 userRouter.post(
@@ -22,6 +23,7 @@ userRouter.get("/", getUsers);
 userRouter.get(
   "/myprofile",
   passport.authenticate("jwt", { session: false }),
+  onlyAdmin,
   getMyProfile
 );
 
