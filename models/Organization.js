@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
-const { events } = require("./Event");
 
-const UserSchema = new mongoose.Schema({
-  username: {
+const OrganizationSchema = new mongoose.Schema({
+  name: {
     type: String,
     unique: true,
     required: true,
@@ -12,29 +11,13 @@ const UserSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
-  firstName: {
-    type: String,
-    required: true,
-  },
-  lastName: {
-    type: String,
-    required: true,
-  },
   phone: {
     type: String,
     required: true,
   },
-  gender: {
+  address: {
     type: String,
     required: true,
-  },
-  rate: {
-    type: Number,
-    required: true,
-  },
-  registeredEvents: {
-    type: Array,
-    default: [],
   },
   password: {
     type: String,
@@ -42,7 +25,18 @@ const UserSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    default: "media/programmer.png",
+  },
+  type: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  socialLinks: {
+    type: Array,
+    default: [],
   },
   eventId: [
     {
@@ -52,4 +46,4 @@ const UserSchema = new mongoose.Schema({
   ],
 });
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model("Organization", OrganizationSchema);
