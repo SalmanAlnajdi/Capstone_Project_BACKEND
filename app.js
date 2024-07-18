@@ -11,6 +11,7 @@ const path = require("path");
 const userRouter = require("./apis/users/routes");
 const organizationRouter = require("./apis/organization/routes");
 const adminRouter = require("./apis/admin/routes");
+const DonationRouter = require("./apis/donations/routes");
 require("dotenv").config();
 
 const app = express();
@@ -32,6 +33,7 @@ passport.use("jwt", jwtStrategy);
 app.use("/admin", adminRouter);
 app.use("/user", userRouter);
 app.use("/organization", organizationRouter);
+app.use("/donation", DonationRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
