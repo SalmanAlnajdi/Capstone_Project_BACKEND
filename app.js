@@ -8,6 +8,7 @@ const { localStrategy, jwtStrategy } = require("./middlewares/passport");
 
 const cors = require("cors");
 const path = require("path");
+const DonationRouter = require("./apis/donations/routes");
 require("dotenv").config();
 
 const app = express();
@@ -26,6 +27,7 @@ passport.use("jwt", jwtStrategy);
 
 // Add your routes here
 // Example: app.use('/users', usersRouter);
+app.use("/donation", DonationRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
