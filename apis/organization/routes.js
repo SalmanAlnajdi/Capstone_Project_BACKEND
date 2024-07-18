@@ -1,40 +1,37 @@
 const express = require("express");
 const upload = require("../../middlewares/multer");
-const userRouter = express.Router();
+const organizationRouter = express.Router();
 
 const {
   signup,
   signin,
-  getUsers,
+  getOrganizations,
   getMyProfile,
   updateMyProfile,
 } = require("./controllers");
 const passport = require("passport");
-const { onlyAdmin } = require("../../middlewares/passport");
-const { ensureUser } = require("../../middlewares/ensureUser");
+const { ensureOrganization } = require("../../middlewares/ensureOrganization");
 
-userRouter.post("/signup", upload.single("image"), signup);
-userRouter.post(
+organizationRouter.post("/signup", upload.single("image"), signup);
+organizationRouter.post(
   "/signin",
   passport.authenticate("local", { session: false }),
-  ensureUser,
+  ensureOrganization,
   signin
 );
-userRouter.get("/", getUsers);
-
-userRouter.get(
+organizationRouter.get("/", getOrganizations);
+organizationRouter.get(
   "/myprofile",
   passport.authenticate("jwt", { session: false }),
-  ensureUser,
+  ensureOrganization,
   getMyProfile
 );
-
-userRouter.put(
+organizationRouter.put(
   "/myprofile",
   passport.authenticate("jwt", { session: false }),
   upload.single("image"),
-  ensureUser,
+  ensureOrganization,
   updateMyProfile
 );
 
-module.exports = userRouter;
+module.exports = organizationRouter;
