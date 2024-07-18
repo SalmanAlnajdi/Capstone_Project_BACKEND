@@ -50,6 +50,10 @@ const UserSchema = new mongoose.Schema({
       ref: "Event",
     },
   ],
+  role: {
+    type: String,
+    default: "User",
+  },
 });
 
 module.exports = mongoose.model("User", UserSchema);
