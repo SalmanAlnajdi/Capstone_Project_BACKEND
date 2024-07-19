@@ -7,7 +7,6 @@ const EventSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: true,
   },
   images: {
     type: Array,
@@ -15,11 +14,9 @@ const EventSchema = new mongoose.Schema({
   },
   date: {
     type: Date,
-    required: true,
   },
   time: {
     type: String,
-    required: true,
   },
   address: {
     type: String,
@@ -42,11 +39,12 @@ const EventSchema = new mongoose.Schema({
   maxParticipants: {
     type: Number,
   },
-  userId : [{
+  owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-  }],
-  organizationId : {
+  },
+
+  organizationId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Organization",
   },
