@@ -39,7 +39,8 @@ exports.signin = async (req, res, next) => {
 
 exports.getOrganizations = async (req, res, next) => {
   try {
-    const organizations = await Organization.find();
+    const organizations = await User.find({ role: "Organization" });
+
     res.status(201).json(organizations);
   } catch (err) {
     next(err);
@@ -96,6 +97,18 @@ exports.updateMyProfile = async (req, res, next) => {
         new: true,
       }
     );
+    if (!organization) {
+      return res.status(404).json({ message: "Organization not found" });
+    }
+    res.status(200).json(organization);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getOrganizationById = async (req, res, next) => {
+  try {
+    const organization = await User.findById(req.params.id);
     if (!organization) {
       return res.status(404).json({ message: "Organization not found" });
     }

@@ -12,6 +12,7 @@ const userRouter = require("./apis/users/routes");
 const organizationRouter = require("./apis/organization/routes");
 const adminRouter = require("./apis/admin/routes");
 const DonationRouter = require("./apis/donations/routes");
+const eventRouter = require("./apis/event/routes");
 const ReciverRouter = require("./apis/receiver/routes");
 require("dotenv").config();
 
@@ -38,6 +39,7 @@ app.use("/admin", adminRouter);
 app.use("/user", userRouter);
 app.use("/organization", organizationRouter);
 app.use("/donation", DonationRouter);
+app.use("/event", eventRouter);
 app.use("/receiver", ReciverRouter);
 
 app.use(notFoundHandler);

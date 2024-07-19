@@ -8,6 +8,7 @@ const {
   getOrganizations,
   getMyProfile,
   updateMyProfile,
+  getOrganizationById,
 } = require("./controllers");
 const passport = require("passport");
 const { ensureOrganization } = require("../../middlewares/ensureOrganization");
@@ -32,6 +33,13 @@ organizationRouter.put(
   upload.single("image"),
   ensureOrganization,
   updateMyProfile
+);
+
+organizationRouter.get(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  ensureOrganization,
+  getOrganizationById
 );
 
 module.exports = organizationRouter;

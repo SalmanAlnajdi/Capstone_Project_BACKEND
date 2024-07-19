@@ -48,7 +48,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: "media/programmer.png",
   },
-  eventId: [
+  events: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Event",
