@@ -7,8 +7,8 @@ const ReceiverSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    unique: true,
-    required: true,
+    // unique: true,
+    // required: true,
   },
   phone: {
     type: String,
@@ -34,10 +34,12 @@ const ReceiverSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  donationItemId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "DonationItem",
-  },
+  donationItemId: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "DonationItem",
+    },
+  ],
 });
 
 module.exports = mongoose.model("Receiver", ReceiverSchema);
