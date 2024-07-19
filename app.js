@@ -29,8 +29,11 @@ app.use(passport.initialize());
 passport.use("local", localStrategy);
 passport.use("jwt", jwtStrategy);
 
+const qrCodeRoute = require("./apis/qrcode/routes");
+
 // Add your routes here
 // Example: app.use('/users', usersRouter);
+app.use("/api", qrCodeRoute);
 app.use("/admin", adminRouter);
 app.use("/user", userRouter);
 app.use("/organization", organizationRouter);
