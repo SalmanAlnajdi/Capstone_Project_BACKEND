@@ -9,10 +9,12 @@ const DonationListSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  donationItemId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "DonationItem",
-  },
+  donationItemId: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "DonationItem",
+    },
+  ],
 });
 
 module.exports = mongoose.model("DonationList", DonationListSchema);
