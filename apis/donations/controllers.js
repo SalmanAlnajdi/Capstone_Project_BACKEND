@@ -1,5 +1,6 @@
 const DonationItem = require("../../models/DonationItem");
 const DonationList = require("../../models/DonationList");
+const Receiver = require("../../models/Receiver");
 
 const getAllDonationsItems = async (req, res, next) => {
   try {
@@ -73,6 +74,12 @@ const CreateDonation = async (req, res, next) => {
       $push: { donationItemId: donation._id },
     });
 
+    if (req.body.receiverId) {
+      await Receiver.findByIdAndUpdate(req.body.receiverId, {
+        $push: { donationItemId: donation._id },
+      });
+    }
+
     return res.status(201).json(donation);
   } catch (error) {
     next(error);
@@ -93,6 +100,23 @@ const delOneDonationItem = async (req, res, next) => {
   }
 };
 
+const updateOneDonationItem = async (req, res, next) => {
+  const id = req.params.id;
+  try {
+    const updateddonation = await DonationItem.findByIdAndUpdate(
+      id,
+      req.body
+    ).populate("name");
+    if (updateddonation) {
+      return res.status(201).json(updateddonation);
+    } else {
+      return res.status(404).json({ msg: "update donation faild!" });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllDonationsItems,
   CreateDonation,
@@ -101,4 +125,5 @@ module.exports = {
   delOneList,
   updateOneList,
   delOneDonationItem,
+  updateOneDonationItem,
 };
