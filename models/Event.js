@@ -48,6 +48,11 @@ const EventSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Organization",
   },
+  pendingRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "Attendee" }],
+  confirmedAttendees: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "Attendee" },
+  ],
+  attendanceChecklist: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 });
 
 module.exports = mongoose.model("Event", EventSchema);

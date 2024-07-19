@@ -12,7 +12,11 @@ exports.getEvents = async (req, res, next) => {
 
 exports.getEventById = async (req, res, next) => {
   try {
-    const event = await Event.findById(req.params.id);
+    const event = await Event.findById(req.params.id)
+      .populate("pendingRequests")
+      .populate("confirmedAttendees")
+      .populate("attendanceChecklist"); // this line to populate the attendance checklist
+
     if (!event) {
       return res.status(404).json({ message: "Event not found" });
     }
@@ -104,7 +108,4 @@ exports.deleteEvent = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};  
-
-
-
+};
