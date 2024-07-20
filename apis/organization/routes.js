@@ -22,13 +22,13 @@ organizationRouter.post(
 );
 organizationRouter.get("/", getOrganizations);
 organizationRouter.get(
-  "/myprofile",
+  "/profile",
   passport.authenticate("jwt", { session: false }),
   ensureOrganization,
   getMyProfile
 );
 organizationRouter.put(
-  "/myprofile",
+  "/profile",
   passport.authenticate("jwt", { session: false }),
   upload.single("image"),
   ensureOrganization,
@@ -40,6 +40,12 @@ organizationRouter.get(
   passport.authenticate("jwt", { session: false }),
   ensureOrganization,
   getOrganizationById
+);
+
+organizationRouter.delete(
+  "/delete/:id",
+  passport.authenticate("jwt", { session: false }),
+  ensureOrganization
 );
 
 module.exports = organizationRouter;
