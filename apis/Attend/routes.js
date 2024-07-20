@@ -6,15 +6,22 @@ const {
   handleAttendanceRequest,
   requestToAttendEvent,
 } = require("./controllers");
+const passport = require("passport");
+const { ensureUser } = require("../../middlewares/ensureUser");
 
 // Attendance request routes
-AttendeeRouter.post("/events/:eventId/request", requestToAttendEvent);
+AttendeeRouter.post(
+  "/:eventId/request",
+  passport.authenticate("jwt", { session: false }),
+  ensureUser,
+  requestToAttendEvent
+);
 
 AttendeeRouter.post(
-  "/events/:eventId/requests/:requestId",
+  "/:eventId/requests/:requestId",
   handleAttendanceRequest
 );
 
-AttendeeRouter.post("/events/:eventId/attendance/:userId", markAttendance);
+AttendeeRouter.post("/:eventId/attendance/:userId", markAttendance);
 
 module.exports = AttendeeRouter;

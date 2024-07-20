@@ -117,3 +117,15 @@ exports.getOrganizationById = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.deleteOrganization = async (req, res, next) => {
+  try {
+    const organization = await User.findByIdAndDelete(req.params.id);
+    if (!organization) {
+      return res.status(404).json({ message: "Organization not found" });
+    }
+    res.status(200).json({ message: "Organization deleted successfully" });
+  } catch (err) {
+    next(err);
+  }
+};

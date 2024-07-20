@@ -8,6 +8,8 @@ const {
   getUsers,
   getMyProfile,
   updateMyProfile,
+  deleteUser,
+  getUserById,
 } = require("./controllers");
 const passport = require("passport");
 const { onlyAdmin } = require("../../middlewares/passport");
@@ -35,6 +37,20 @@ userRouter.put(
   upload.single("image"),
   ensureUser,
   updateMyProfile
+);
+
+userRouter.get(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  ensureUser,
+  getUserById
+);
+
+userRouter.delete(
+  "/delete/:id",
+  passport.authenticate("jwt", { session: false }),
+  ensureUser,
+  deleteUser
 );
 
 module.exports = userRouter;

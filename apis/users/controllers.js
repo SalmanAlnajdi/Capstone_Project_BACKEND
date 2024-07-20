@@ -74,3 +74,21 @@ exports.updateMyProfile = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.getUserById = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id).select("-password");
+    res.status(201).json(user);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteUser = async (req, res, next) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    res.status(201).json(user);
+  } catch (err) {
+    next(err);
+  }
+};
