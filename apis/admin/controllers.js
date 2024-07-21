@@ -6,6 +6,7 @@ const ganerateToken = (user) => {
   const payload = {
     username: user.username,
     _id: user._id,
+    role: "Admin",
   };
 
   return jwt.sign(payload, process.env.JWT_SECRET);
@@ -25,6 +26,7 @@ exports.signup = async (req, res, next) => {
 
     return res.status(201).json({ token });
   } catch (err) {
+    console.log(err);
     next(err);
   }
 };

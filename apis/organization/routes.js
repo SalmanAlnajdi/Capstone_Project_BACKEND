@@ -36,7 +36,7 @@ organizationRouter.put(
 );
 
 organizationRouter.get(
-  "/:id",
+  "/profile/:id",
   passport.authenticate("jwt", { session: false }),
   ensureOrganization,
   getOrganizationById

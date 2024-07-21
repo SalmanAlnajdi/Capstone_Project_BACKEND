@@ -108,6 +108,8 @@ exports.updateMyProfile = async (req, res, next) => {
 
 exports.getOrganizationById = async (req, res, next) => {
   try {
+    console.log("test");
+    console.log("test", req.params.id);
     const organization = await User.findById(req.params.id);
     if (!organization) {
       return res.status(404).json({ message: "Organization not found" });
