@@ -90,13 +90,9 @@ exports.updateMyProfile = async (req, res, next) => {
     req.body.image = req.file.path.replace("\\", "/");
   }
   try {
-    const organization = await Organization.findByIdAndUpdate(
-      req.organization._id,
-      req.body,
-      {
-        new: true,
-      }
-    );
+    const organization = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
     if (!organization) {
       return res.status(404).json({ message: "Organization not found" });
     }

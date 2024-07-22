@@ -40,7 +40,7 @@ userRouter.put(
 );
 
 userRouter.get(
-  "/:id",
+  "/myprofile/:id",
   passport.authenticate("jwt", { session: false }),
   ensureUser,
   getUserById

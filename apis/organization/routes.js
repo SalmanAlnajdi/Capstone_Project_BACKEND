@@ -28,7 +28,7 @@ organizationRouter.get(
   getMyProfile
 );
 organizationRouter.put(
-  "/profile",
+  "/profile/:id",
   passport.authenticate("jwt", { session: false }),
   upload.single("image"),
   ensureOrganization,
