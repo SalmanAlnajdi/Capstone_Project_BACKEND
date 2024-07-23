@@ -6,6 +6,7 @@ const ganerateToken = (user) => {
   const payload = {
     username: user.username,
     _id: user._id,
+    role: "User",
   };
 
   return jwt.sign(payload, process.env.JWT_SECRET);
@@ -52,11 +53,12 @@ exports.getUsers = async (req, res, next) => {
 
 exports.getMyProfile = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user._id).select("-password");
+    console.log("here");
+    const user = await User.findById(req.user._id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.status(200).json(user);
+    return res.status(200).json(user);
   } catch (err) {
     next(err);
   }

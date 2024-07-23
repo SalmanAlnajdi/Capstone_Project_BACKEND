@@ -1,12 +1,14 @@
 const DonationItem = require("../../models/DonationItem");
 const DonationList = require("../../models/DonationList");
 const Receiver = require("../../models/Receiver");
+const User = require("../../models/User");
 
 const getAllDonationsItems = async (req, res, next) => {
   try {
     const Donations = await DonationItem.find()
       .populate("donationListId")
-      .populate("receiverId");
+      .populate("receiverId")
+      .populate("createBy", "username");
     res.status(201).json(Donations);
   } catch (error) {
     next(error);
@@ -51,6 +53,11 @@ const updateOneList = async (req, res, next) => {
   const id = req.params.id;
   try {
     const updatedlist = await DonationList.findByIdAndUpdate(id, req.body);
+
+    await DonationItem.findByIdAndUpdate(req.body.donationItemId, {
+      $push: { donationListId: updatedlist._id },
+    });
+
     if (updatedlist) {
       return res.status(201).json(updatedlist);
     } else {
@@ -68,10 +75,21 @@ const CreateDonation = async (req, res, next) => {
     }
     // req.body.user = req.user._id;
 
-    const donation = await DonationItem.create(req.body);
+    const createBy = req.user._id;
+
+    const donation = await DonationItem.create({
+      ...req.body,
+      createBy,
+    });
+
+    console.log(donation);
 
     await DonationList.findByIdAndUpdate(req.body.DonationList_id, {
       $push: { donationItemId: donation._id },
+    });
+
+    await User.findByIdAndUpdate(req.user._id, {
+      $push: { donations: donation._id },
     });
 
     if (req.body.receiverId) {

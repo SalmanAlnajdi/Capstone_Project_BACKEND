@@ -10,11 +10,19 @@ const {
   updateOneDonationItem,
 } = require("./controllers");
 const upload = require("../../middlewares/multer");
+const passport = require("passport");
+const { ensureUser } = require("../../middlewares/ensureUser");
 
 const DonationRouter = express.Router();
 
 DonationRouter.get("/", getAllDonationsItems);
-DonationRouter.post("/", upload.single("image"), CreateDonation);
+DonationRouter.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  ensureUser,
+  CreateDonation
+);
 DonationRouter.delete("/:id", upload.single("image"), delOneDonationItem);
 DonationRouter.put("/:id", upload.single("image"), updateOneDonationItem);
 
