@@ -73,8 +73,8 @@ const CreateDonation = async (req, res, next) => {
     if (req.file) {
       req.body.image = req.file.path;
     }
-    // req.body.user = req.user._id;
 
+    req.body.donationListId = req.body.listId;
     const createBy = req.user._id;
 
     const donation = await DonationItem.create({
@@ -82,9 +82,7 @@ const CreateDonation = async (req, res, next) => {
       createBy,
     });
 
-    console.log(donation);
-
-    await DonationList.findByIdAndUpdate(req.body.DonationList_id, {
+    await DonationList.findByIdAndUpdate(req.body.donationListId, {
       $push: { donationItemId: donation._id },
     });
 
@@ -103,6 +101,44 @@ const CreateDonation = async (req, res, next) => {
     next(error);
   }
 };
+
+// const CreateDonation = async (req, res, next) => {
+//   try {
+//     if (req.file) {
+//       req.body.image = req.file.path;
+//     }
+//     // req.body.user = req.user._id;
+
+//     req.body.donationListId = req.body.listId;
+
+//     const createBy = req.user._id;
+
+//     const donation = await DonationItem.create({
+//       ...req.body,
+//       createBy,
+//     });
+
+//     console.log(donation);
+
+//     await DonationList.findByIdAndUpdate(req.body.DonationListId, {
+//       $push: { donations: donation._id },
+//     });
+
+//     await User.findByIdAndUpdate(req.user._id, {
+//       $push: { donations: donation._id },
+//     });
+
+//     if (req.body.receiverId) {
+//       await Receiver.findByIdAndUpdate(req.body.receiverId, {
+//         $push: { donationItemId: donation._id },
+//       });
+//     }
+
+//     return res.status(201).json(donation);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 const delOneDonationItem = async (req, res, next) => {
   const id = req.params.id;

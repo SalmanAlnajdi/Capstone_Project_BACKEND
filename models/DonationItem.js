@@ -14,6 +14,9 @@ const DonationItemSchema = new mongoose.Schema({
   condition: {
     type: String,
   },
+  listId: {
+    type: String,
+  },
   createBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
