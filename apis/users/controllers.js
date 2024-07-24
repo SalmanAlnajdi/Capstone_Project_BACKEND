@@ -6,6 +6,7 @@ const ganerateToken = (user) => {
   const payload = {
     username: user.username,
     _id: user._id,
+    role: "User",
   };
 
   return jwt.sign(payload, process.env.JWT_SECRET);
@@ -68,7 +69,8 @@ exports.updateMyProfile = async (req, res, next) => {
     req.body.image = req.file.path.replace("\\", "/");
   }
   try {
-    const user = await User.findByIdAndUpdate(req.user._id, req.body);
+    console.log("updating", req.body);
+    const user = await User.findByIdAndUpdate(req.body.id, req.body);
     res.status(201).json(user);
   } catch (err) {
     next(err);

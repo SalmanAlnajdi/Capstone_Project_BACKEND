@@ -47,6 +47,7 @@ exports.createEvent = async (req, res, next) => {
       maxParticipants,
       organizationId,
     } = req.body;
+    console.log(req.body);
 
     // Set the owner to the authenticated user's ID
     const ownerId = req.user._id;
