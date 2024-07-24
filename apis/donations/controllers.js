@@ -18,7 +18,18 @@ const getAllDonationsItems = async (req, res, next) => {
 const getAllList = async (req, res, next) => {
   try {
     const list = await DonationList.find()
-      .populate("userId")
+      .populate("createBy", "username")
+      .populate("donationItemId");
+    res.status(201).json(list);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getListsByUser = async (req, res, next) => {
+  try {
+    const list = await DonationList.find({ createBy: req.user._id })
+      .populate("createBy", "username")
       .populate("donationItemId");
     res.status(201).json(list);
   } catch (error) {
@@ -28,17 +39,22 @@ const getAllList = async (req, res, next) => {
 
 const CreateList = async (req, res, next) => {
   try {
+    req.body.createBy = req.user._id;
+
     const list = await DonationList.create(req.body);
     return res.status(201).json(list);
   } catch (error) {
     next(error);
   }
+
+  await User.findByIdAndUpdate(req.user._id, {
+    $push: { donationLists: list._id },
+  });
 };
 
 const delOneList = async (req, res, next) => {
-  const id = req.params.id;
   try {
-    const dellist = await DonationList.findByIdAndDelete(id, req.body);
+    const dellist = await DonationList.findByIdAndDelete(req.params.id);
     if (dellist) {
       return res.status(201).json(dellist);
     } else {
@@ -180,4 +196,5 @@ module.exports = {
   updateOneList,
   delOneDonationItem,
   updateOneDonationItem,
+  getListsByUser,
 };
