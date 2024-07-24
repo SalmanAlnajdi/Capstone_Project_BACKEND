@@ -36,12 +36,26 @@ const getListsByUser = async (req, res, next) => {
     next(error);
   }
 };
+const getListById = async (req, res, next) => {
+  try {
+    const list = await DonationList.findById(req.params.id)
+      .populate("createBy", "username")
+      .populate("donationItemId");
+    if (!list) {
+      return res.status(404).json({ message: "list not found" });
+    }
+    res.status(201).json(list);
+  } catch (err) {
+    next(err);
+  }
+};
 
 const CreateList = async (req, res, next) => {
   try {
     req.body.createBy = req.user._id;
 
     const list = await DonationList.create(req.body);
+    console.log(list);
     return res.status(201).json(list);
   } catch (error) {
     next(error);
@@ -197,4 +211,5 @@ module.exports = {
   delOneDonationItem,
   updateOneDonationItem,
   getListsByUser,
+  getListById,
 };

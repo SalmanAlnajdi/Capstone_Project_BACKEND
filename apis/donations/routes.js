@@ -9,6 +9,7 @@ const {
   delOneDonationItem,
   updateOneDonationItem,
   getListsByUser,
+  getListById,
 } = require("./controllers");
 const upload = require("../../middlewares/multer");
 const passport = require("passport");
@@ -28,6 +29,7 @@ DonationRouter.delete("/:id", upload.single("image"), delOneDonationItem);
 DonationRouter.put("/:id", upload.single("image"), updateOneDonationItem);
 
 DonationRouter.get("/list", getAllList);
+DonationRouter.get("/list/:id", getListById);
 DonationRouter.delete("/list/:id", upload.single("image"), delOneList);
 DonationRouter.post(
   "/list",

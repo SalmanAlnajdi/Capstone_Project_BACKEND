@@ -4,7 +4,6 @@ const DonationListSchema = new mongoose.Schema({
   name: {
     type: String,
   },
-
   createBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
