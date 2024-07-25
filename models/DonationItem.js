@@ -17,6 +17,9 @@ const DonationItemSchema = new mongoose.Schema({
   listId: {
     type: String,
   },
+  isAvailable: {
+    type: Boolean,
+  },
   createBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
