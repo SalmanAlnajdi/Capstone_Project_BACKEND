@@ -38,9 +38,10 @@ const getListsByUser = async (req, res, next) => {
 };
 const getListById = async (req, res, next) => {
   try {
-    const list = await DonationList.findById(req.params.id)
+    const list = await DonationList.findById(req.params.listid)
       .populate("createBy", "username")
-      .populate("donationItemId");
+      .populate("donationItemId")
+      .exec();
     if (!list) {
       return res.status(404).json({ message: "list not found" });
     }
@@ -55,7 +56,6 @@ const CreateList = async (req, res, next) => {
     req.body.createBy = req.user._id;
 
     const list = await DonationList.create(req.body);
-    console.log(list);
     return res.status(201).json(list);
   } catch (error) {
     next(error);
