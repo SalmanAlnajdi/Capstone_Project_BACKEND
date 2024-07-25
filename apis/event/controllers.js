@@ -3,7 +3,7 @@ const User = require("../../models/User");
 
 exports.getEvents = async (req, res, next) => {
   try {
-    const events = await Event.find();
+    const events = await Event.find().populate("owner");
     res.status(201).json(events);
   } catch (err) {
     next(err);

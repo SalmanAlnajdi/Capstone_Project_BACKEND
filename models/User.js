@@ -54,6 +54,18 @@ const UserSchema = new mongoose.Schema({
       ref: "Event",
     },
   ],
+  donations: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "DonationItem",
+    },
+  ],
+  donationLists: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "DonationList",
+    },
+  ],
   role: {
     type: String,
     default: "User",

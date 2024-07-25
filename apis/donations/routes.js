@@ -8,20 +8,48 @@ const {
   updateOneList,
   delOneDonationItem,
   updateOneDonationItem,
+  getListsByUser,
 } = require("./controllers");
 const upload = require("../../middlewares/multer");
+const passport = require("passport");
+const { ensureUser } = require("../../middlewares/ensureUser");
 
 const DonationRouter = express.Router();
 
 DonationRouter.get("/", getAllDonationsItems);
-DonationRouter.post("/", upload.single("image"), CreateDonation);
+DonationRouter.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  ensureUser,
+  CreateDonation
+);
 DonationRouter.delete("/:id", upload.single("image"), delOneDonationItem);
 DonationRouter.put("/:id", upload.single("image"), updateOneDonationItem);
 
 DonationRouter.get("/list", getAllList);
 DonationRouter.delete("/list/:id", upload.single("image"), delOneList);
-DonationRouter.post("/list", upload.single("image"), CreateList);
-DonationRouter.delete("/list/:id", upload.single("image"), delOneList);
+DonationRouter.post(
+  "/list",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  ensureUser,
+  CreateList
+);
+DonationRouter.delete(
+  "/deletelist/:id",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  ensureUser,
+  delOneList
+);
 DonationRouter.put("/list/:id", upload.single("image"), updateOneList);
+DonationRouter.get(
+  "/listbyuser",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  ensureUser,
+  getListsByUser
+);
 
 module.exports = DonationRouter;

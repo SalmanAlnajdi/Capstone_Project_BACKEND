@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const DonationItemSchema = new mongoose.Schema({
+  //name , description , image , condition , createBy , donationListId , receiverId
   name: {
     type: String,
   },
@@ -12,6 +13,13 @@ const DonationItemSchema = new mongoose.Schema({
   },
   condition: {
     type: String,
+  },
+  listId: {
+    type: String,
+  },
+  createBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
   donationListId: {
     type: mongoose.Schema.Types.ObjectId,
