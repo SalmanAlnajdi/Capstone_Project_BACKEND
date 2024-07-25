@@ -15,7 +15,10 @@ const EventSchema = new mongoose.Schema({
   date: {
     type: Date,
   },
-  time: {
+  startTime: {
+    type: String,
+  },
+  endTime: {
     type: String,
   },
   address: {
@@ -25,9 +28,6 @@ const EventSchema = new mongoose.Schema({
     type: String,
   },
   state: {
-    type: String,
-  },
-  zipCode: {
     type: String,
   },
   location: {
