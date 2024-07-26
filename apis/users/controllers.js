@@ -71,7 +71,7 @@ exports.updateMyProfile = async (req, res, next) => {
   }
   try {
     console.log("updating", req.body);
-    const user = await User.findByIdAndUpdate(req.body.id, req.body);
+    const user = await User.findByIdAndUpdate(req.user._id, req.body);
     res.status(201).json(user);
   } catch (err) {
     next(err);
