@@ -9,6 +9,7 @@ const {
   getMyProfile,
   updateMyProfile,
   getOrganizationById,
+  deleteOrganization,
 } = require("./controllers");
 const passport = require("passport");
 const { ensureOrganization } = require("../../middlewares/ensureOrganization");
@@ -45,7 +46,8 @@ organizationRouter.get(
 organizationRouter.delete(
   "/delete/:id",
   passport.authenticate("jwt", { session: false }),
-  ensureOrganization
+  ensureOrganization,
+  deleteOrganization
 );
 
 module.exports = organizationRouter;
