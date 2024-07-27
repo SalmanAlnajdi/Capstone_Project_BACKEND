@@ -64,6 +64,20 @@ exports.getMyProfile = async (req, res, next) => {
   }
 };
 
+// exports.updateMyProfile = async (req, res, next) => {
+//   if (req.file) {
+//     console.log(req.file);
+//     req.body.image = req.file.path.replace("\\", "/");
+//   }
+//   try {
+//     console.log("updating", req.body);
+//     const user = await User.findByIdAndUpdate(req.user._id, req.body);
+//     res.status(201).json(user);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
 exports.updateMyProfile = async (req, res, next) => {
   if (req.file) {
     console.log(req.file);
@@ -71,7 +85,9 @@ exports.updateMyProfile = async (req, res, next) => {
   }
   try {
     console.log("updating", req.body);
-    const user = await User.findByIdAndUpdate(req.user._id, req.body);
+    const user = await User.findByIdAndUpdate(req.user._id, req.body, {
+      new: true,
+    });
     res.status(201).json(user);
   } catch (err) {
     next(err);

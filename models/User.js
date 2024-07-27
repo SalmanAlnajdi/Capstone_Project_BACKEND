@@ -46,7 +46,7 @@ const UserSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    default: "media/programmer.png",
+    default: "/media/programmer.png",
   },
   events: [
     {

@@ -45,6 +45,7 @@ app.use("/donation", DonationRouter);
 app.use("/event", eventRouter);
 app.use("/receiver", ReciverRouter);
 app.use("/attend", AttendeeRouter);
+app.use("/media", express.static(path.join(__dirname, "media")));
 
 app.use(notFoundHandler);
 app.use(errorHandler);
