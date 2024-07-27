@@ -64,32 +64,55 @@ exports.getMyProfile = async (req, res, next) => {
   }
 };
 
-// exports.updateMyProfile = async (req, res, next) => {
-//   if (req.file) {
-//     console.log(req.file);
-//     req.body.image = req.file.path.replace("\\", "/");
-//   }
-//   try {
-//     console.log("updating", req.body);
-//     const user = await User.findByIdAndUpdate(req.user._id, req.body);
-//     res.status(201).json(user);
-//   } catch (err) {
-//     next(err);
-//   }
-// };
-
 exports.updateMyProfile = async (req, res, next) => {
   if (req.file) {
-    console.log(req.file);
     req.body.image = req.file.path.replace("\\", "/");
   }
+
   try {
-    console.log("updating", req.body);
-    const user = await User.findByIdAndUpdate(req.user._id, req.body, {
-      new: true,
-    });
-    res.status(201).json(user);
+    console.log("Updating user profile with data:", req.body);
+
+    // Validate required fields (optional, based on your requirements)
+    const requiredFields = [
+      "username",
+      "firstName",
+      "lastName",
+      "phone",
+      "email",
+      "gender",
+    ];
+    for (const field of requiredFields) {
+      if (!req.body[field]) {
+        return res
+          .status(400)
+          .json({ message: `Missing required field: ${field}` });
+      }
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        username: req.body.username,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        phone: req.body.phone,
+        image: req.body.image,
+        email: req.body.email,
+        gender: req.body.gender,
+      },
+      {
+        new: true,
+        runValidators: true, // Ensure validation rules in the schema are applied
+      }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user);
   } catch (err) {
+    console.error("Error updating user profile:", err);
     next(err);
   }
 };
