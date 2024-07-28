@@ -33,10 +33,9 @@ passport.use("jwt", jwtStrategy);
 const qrCodeRoute = require("./apis/qrcode/routes");
 const AttendeeRouter = require("./apis/Attend/routes");
 
-app.use("/media", express.static(path.join(__dirname, "media")));
-
 // Add your routes here
 // Example: app.use('/users', usersRouter);
+app.use("/media", express.static(path.join(__dirname, "media")));
 app.use("/api", qrCodeRoute);
 app.use("/admin", adminRouter);
 app.use("/user", userRouter);
@@ -45,7 +44,6 @@ app.use("/donation", DonationRouter);
 app.use("/event", eventRouter);
 app.use("/receiver", ReciverRouter);
 app.use("/attend", AttendeeRouter);
-app.use("/media", express.static(path.join(__dirname, "media")));
 
 app.use(notFoundHandler);
 app.use(errorHandler);

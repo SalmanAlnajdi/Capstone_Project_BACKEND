@@ -116,7 +116,59 @@ exports.updateMyProfile = async (req, res, next) => {
     next(err);
   }
 };
+exports.updateUserProfile = async (req, res, next) => {
+  console.log(req.files, req.file);
+  if (req.file) {
+    req.body.image = req.file.path.replace("\\", "/");
+  }
 
+  try {
+    console.log("Updating user profile with data:", req.body);
+
+    // Validate required fields (optional, based on your requirements)
+    const requiredFields = [
+      "username",
+      "firstName",
+      "lastName",
+      "phone",
+      "email",
+      "gender",
+    ];
+    for (const field of requiredFields) {
+      if (!req.body[field]) {
+        return res
+          .status(400)
+          .json({ message: `Missing required field: ${field}` });
+      }
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.body.id,
+      {
+        username: req.body.username,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        phone: req.body.phone,
+        image: req.body.image,
+        email: req.body.email,
+        gender: req.body.gender,
+      },
+      {
+        new: true,
+        runValidators: true, // Ensure validation rules in the schema are applied
+      }
+    );
+    console.log("first");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (err) {
+    console.error("Error updating user profile:", err);
+    next(err);
+  }
+};
 exports.getUserById = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id).select("-password");
