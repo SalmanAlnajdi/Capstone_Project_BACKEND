@@ -34,7 +34,7 @@ exports.createEvent = async (req, res, next) => {
   try {
     const {
       name,
-      images,
+      image,
       description,
       date,
 
@@ -56,7 +56,7 @@ exports.createEvent = async (req, res, next) => {
     // Create the new event
     const event = await Event.create({
       name,
-      images,
+      image,
       description,
       date,
 
