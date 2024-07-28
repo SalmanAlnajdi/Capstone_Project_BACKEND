@@ -1,3 +1,4 @@
+const { name } = require("ejs");
 const DonationItem = require("../../models/DonationItem");
 const DonationList = require("../../models/DonationList");
 const Receiver = require("../../models/Receiver");
@@ -99,16 +100,19 @@ const updateOneList = async (req, res, next) => {
 };
 
 const CreateDonation = async (req, res, next) => {
+  if (req.file) {
+    req.body.image = req.file.path.replace("\\", "/");
+  }
   try {
-    if (req.file) {
-      req.body.image = req.file.path;
-    }
-
     req.body.donationListId = req.body.listId;
     const createBy = req.user._id;
 
     const donation = await DonationItem.create({
-      ...req.body,
+      name: req.body.name,
+      description: req.body.description,
+      image: req.body.image,
+      condition: req.body.condition,
+
       createBy,
     });
 
