@@ -1,70 +1,72 @@
-const DonationItem = require("../../models/DonationItem");
-const DonationList = require("../../models/DonationList");
+// apis/receiver/controllers.js
 const Receiver = require("../../models/Receiver");
+const User = require("../../models/User");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const DonationList = require("../../models/DonationList");
 
-const CreateReceiver = async (req, res, next) => {
+const generateToken = (user) => {
+  const payload = {
+    username: user.username,
+    _id: user._id,
+    role: "receiver",
+  };
+
+  return jwt.sign(payload, process.env.JWT_SECRET);
+};
+
+const signup = async (req, res, next) => {
+  if (req.file) {
+    req.body.image = req.file.path.replace("\\", "/");
+  }
   try {
-    if (req.file) {
-      req.body.image = req.file.path;
+    const { lastName, firstName, phone } = req.body;
+    if (!lastName || !firstName || !phone) {
+      return res.status(400).json({ message: "Please fill all the fields" });
     }
-    // req.body.user = req.user._id;
+    req.body.password = await bcrypt.hash(req.body.password, 10);
+    req.body.role = "receiver";
+    const newUser = await User.create(req.body);
 
-    const reciver = await Receiver.create(req.body);
+    const token = generateToken(newUser);
 
-    await DonationList.findByIdAndUpdate(req.body.DonationList_id, {
-      $push: { donationItemId: DonationItem._id },
-    });
-
-    return res.status(201).json(reciver);
-  } catch (error) {
-    next(error);
+    return res.status(201).json({ token, user: newUser });
+  } catch (err) {
+    next(err);
   }
 };
 
-const getAllReciever = async (req, res, next) => {
+const signin = async (req, res, next) => {
   try {
-    const receiver = await Receiver.find().populate("donationItemId");
-
-    res.status(201).json(receiver);
-  } catch (error) {
-    next(error);
+    const user = await User.findOne({ username: req.body.username });
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+    const isMatch = await bcrypt.compare(req.body.password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+    const token = generateToken(user);
+    return res.status(201).json({ token, user });
+  } catch (err) {
+    next(err);
   }
 };
 
-const DelOneReceiver = async (req, res, next) => {
-  const id = req.params.id;
+const me = async (req, res, next) => {
   try {
-    const delreceiver = await Receiver.findByIdAndDelete(id, req.body);
-    if (delreceiver) {
-      return res.status(201).json(delreceiver);
-    } else {
-      return res.status(404).json({ msg: "delete receiver faild!" });
+    const user = await User.findById(req.user._id).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
-  } catch (error) {
-    next(error);
-  }
-};
-
-const updateOneReceiver = async (req, res, next) => {
-  const id = req.params.id;
-  try {
-    const updatedreceiver = await Receiver.findByIdAndUpdate(
-      id,
-      req.body
-    ).populate("name");
-    if (updatedreceiver) {
-      return res.status(201).json(updatedreceiver);
-    } else {
-      return res.status(404).json({ msg: "update receiver faild!" });
-    }
-  } catch (error) {
-    next(error);
+    res.status(200).json(user);
+  } catch (err) {
+    next(err);
   }
 };
 
 module.exports = {
-  CreateReceiver,
-  getAllReciever,
-  DelOneReceiver,
-  updateOneReceiver,
+  signup,
+  signin,
+  me,
 };
