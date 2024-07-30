@@ -1,9 +1,10 @@
+// models/DonationItem.js
 const mongoose = require("mongoose");
 
 const DonationItemSchema = new mongoose.Schema({
-  //name , description , image , condition , createBy , donationListId , receiverId
   name: {
     type: String,
+    required: true,
   },
   description: {
     type: String,
@@ -14,11 +15,9 @@ const DonationItemSchema = new mongoose.Schema({
   condition: {
     type: String,
   },
-  listId: {
-    type: String,
-  },
   isAvailable: {
     type: Boolean,
+    default: true,
   },
   createBy: {
     type: mongoose.Schema.Types.ObjectId,
