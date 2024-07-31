@@ -1,3 +1,4 @@
+// models/User.js
 const mongoose = require("mongoose");
 const { events } = require("./Event");
 

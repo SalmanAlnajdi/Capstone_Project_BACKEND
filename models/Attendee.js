@@ -1,3 +1,4 @@
+// models/Attendee.js
 const mongoose = require("mongoose");
 
 const AttendeeSchema = new mongoose.Schema({

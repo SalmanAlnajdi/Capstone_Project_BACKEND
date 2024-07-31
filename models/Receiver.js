@@ -1,3 +1,4 @@
+// models/Receiver.js
 const mongoose = require("mongoose");
 
 const ReceiverSchema = new mongoose.Schema({

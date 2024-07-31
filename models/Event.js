@@ -1,3 +1,4 @@
+// models/Event.js
 const mongoose = require("mongoose");
 
 const EventSchema = new mongoose.Schema({
@@ -42,10 +43,9 @@ const EventSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-
   organizationId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Organization",
+    ref: "User", // Ensure this references User if User is used for organizations
   },
   pendingRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "Attendee" }],
   confirmedAttendees: [

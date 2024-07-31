@@ -1,3 +1,4 @@
+//app.js
 const express = require("express");
 const morgan = require("morgan");
 const connectDB = require("./database");
