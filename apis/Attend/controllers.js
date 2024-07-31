@@ -1,3 +1,4 @@
+// apis/Attend/controllers.js
 const Attendee = require("../../models/Attendee");
 const Event = require("../../models/Event");
 
@@ -130,3 +131,8 @@ exports.markAttendance = async (req, res, next) => {
     next(err);
   }
 };
+
+
+
+
+

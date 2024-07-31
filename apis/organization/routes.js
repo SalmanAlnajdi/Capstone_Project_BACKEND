@@ -1,3 +1,4 @@
+// apis/organization/routes.js
 const express = require("express");
 const upload = require("../../middlewares/multer");
 const organizationRouter = express.Router();
@@ -10,6 +11,7 @@ const {
   updateMyProfile,
   getOrganizationById,
   deleteOrganization,
+  getVolunteersByOrganization, // Add this line
 } = require("./controllers");
 const passport = require("passport");
 const { ensureOrganization } = require("../../middlewares/ensureOrganization");
@@ -48,6 +50,13 @@ organizationRouter.delete(
   passport.authenticate("jwt", { session: false }),
   ensureOrganization,
   deleteOrganization
+);
+
+organizationRouter.get(
+  "/volunteers",
+  passport.authenticate("jwt", { session: false }),
+  ensureOrganization,
+  getVolunteersByOrganization
 );
 
 module.exports = organizationRouter;

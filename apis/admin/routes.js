@@ -1,3 +1,4 @@
+// apis/admin/routes.js
 const express = require("express");
 const upload = require("../../middlewares/multer");
 const adminRouter = express.Router();

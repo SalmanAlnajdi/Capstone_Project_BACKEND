@@ -1,3 +1,4 @@
+// middlewares/ensureOrganization.js
 function ensureOrganization(req, res, next) {
   if (
     (req.user && req.user.role === "Organization") ||
