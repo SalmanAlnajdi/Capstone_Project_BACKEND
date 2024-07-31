@@ -1,6 +1,7 @@
 // controllers/orderController.js
 const DonationItem = require("../../models/DonationItem");
 const Order = require("../../models/Order");
+const User = require("../../models/User");
 
 const createOrder = async (req, res, next) => {
   try {
@@ -58,4 +59,39 @@ const getOrdersByReceiver = async (req, res, next) => {
   }
 };
 
-module.exports = { createOrder, getOrdersByReceiver };
+const getAllOrders = async (req, res, next) => {
+  try {
+    const orders = await Order.find().populate("items").populate("receiver");
+    res.status(200).json(orders);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteOrderById = async (req, res, next) => {
+  try {
+    const orderId = req.params.orderId;
+    const order = await Order.findByIdAndDelete(orderId);
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Update the availability of the items
+    await DonationItem.updateMany(
+      { _id: { $in: order.items } },
+      { $set: { isAvailable: true, receiverId: null } }
+    );
+
+    res.status(200).json({ message: "Order deleted successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  createOrder,
+  getOrdersByReceiver,
+  getAllOrders,
+  deleteOrderById,
+};

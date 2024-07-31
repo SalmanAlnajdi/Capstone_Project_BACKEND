@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const OrderSchema = new mongoose.Schema({
   receiver: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Receiver",
+    ref: "User",
     required: true,
   },
   items: [
